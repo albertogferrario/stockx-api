@@ -3,7 +3,7 @@ const request = util.promisify(require('postman-request'));
 const { checkRes, parseJSON, writeBody } = require('../../utils');
 
 module.exports = async (product, options) => {
-    const { currency, proxy, userAgent, cookieJar } = options;
+    const { country, currency, proxy, userAgent, cookieJar } = options;
     const variantArray = [];
     let webURL;
     
@@ -14,7 +14,7 @@ module.exports = async (product, options) => {
     else webURL = product.objectID;
 
     const reqOptions = {
-        url: `https://stockx.com/api/products/${webURL}?includes=market&currency=${currency}&country=US`,
+        url: `https://stockx.com/api/products/${webURL}?includes=market&currency=${currency}&country=${country}`,
         headers: {
             'user-agent': userAgent,
             "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
