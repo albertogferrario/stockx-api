@@ -309,4 +309,21 @@ module.exports = class StockX {
 
         return response;
     };
+
+    /**
+     *
+     * @param {string|Object} product - The product URL or object to fetch from
+     */
+    async fetchProductPricing(product){
+        //Fetch pricing and return it
+        const pricing = await fetchProductDetails(product, {
+            country: this.country,
+            currency: this.currency,
+            proxy: this.proxy,
+            userAgent: this.userAgent,
+            cookieJar: this.cookieJar
+        });
+
+        return pricing;
+    };
 };
