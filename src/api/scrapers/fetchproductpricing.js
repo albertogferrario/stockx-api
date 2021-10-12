@@ -12,7 +12,6 @@ module.exports = async (bearer, options) => {
             'Host': 'stockx.com',
             'sec-fetch-mode': 'cors',
             'origin': 'https://stockx.com',
-            'authorization': `Bearer ${bearer}`,
             'content-type': 'application/json',
             'appos': 'web',
             'x-requested-with': 'XMLHttpRequest',
