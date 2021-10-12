@@ -1,9 +1,14 @@
 const request = require('request-promise');
-const moment = require('moment');
 const { checkRes } = require('../../utils');
 
-module.exports = async (bearer, options) => {
-    const { amount, variantID, currency, proxy, cookieJar, userAgent } = options;
+module.exports = async (variant, options) => {
+    const { amount, currency, proxy, cookieJar, userAgent } = options;
+    let variantID;
+
+    if (typeof variant == 'string') {
+        variantID = variant;
+    }
+    else variantID = variant.uuid;
 
     const res = await request({
         uri: `https://stockx.com/api/pricing?currency=${currency}&include_taxes=false`,
@@ -25,9 +30,9 @@ module.exports = async (bearer, options) => {
             context: "buying",
             products: [
                 {
+                    sku: variantID,
                     amount: amount,
                     quantity: 1,
-                    sku: variantID,
                 },
             ],
         },

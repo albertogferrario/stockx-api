@@ -9,7 +9,7 @@ const updateAsk = require('../api/updateask/index');
 const deleteAsk = require('../api/deleteask/index');
 const updateBid = require('../api/updatebid/index');
 const deleteBid = require('../api/deletebid/index');
-const fetchProductPricing = require('../api/scrapers/fetchproductpricing');
+const fetchProductVariantPricing = require('../api/scrapers/fetchproductvariantpricing');
 const { formatProxy } = require('../utils');
 
 module.exports = class StockX {
@@ -313,34 +313,24 @@ module.exports = class StockX {
 
     /**
      *
-     * @param {Object} product - The product object
-     * @param {Object} options
-     * @param {number} options.amount - The amount to place the bid for
-     * @param {string} options.size - The requested size
+     * @param {Object} variant - The variant object
      */
-    async fetchProductPricing(product, options = {}){
-        //Convert amount to numeral type
-        const amount = Number(options.amount);
-        const requestedSize = options.size;
+    async fetchProductVariantPricing(variant){
 
         //Verify fields passed in by user
-        if (amount == NaN) throw new Error("Amount is incorrect, please ensure your parameters are correctly formatted.");
-        else if (requestedSize == undefined) throw new Error("Please specify a size to bid on!");
-        else if (product == undefined) throw new Error("A product must be specified!");
-        else if (typeof product == 'string') throw new Error("The product passed in must an object. Use fetchProductDetails() to get the details first.");
-        else if (product.variants == undefined) throw new Error("No variants found in product! Please check the product object passed in.");
+        if (variant == undefined) throw new Error("A variant must be specified!");
+        else if (typeof variant == 'string') throw new Error("The variant passed in must an object.");
+        else if (variant.market == undefined) throw new Error("No market found in variant! Please check the variant object passed in.");
 
-        //Get size from requestedSize in the product variants
-        const size = requestedSize.toLowerCase() == 'random' ? product.variants[Math.floor(Math.random() * product.variants.length)] : product.variants.find(variant => variant.size == requestedSize);
+        //Get lowestAsk from variant
+        const amount = variant.market.lowestAsk;
 
-        //Check if getting size was successful
-        if (size == undefined) throw new Error("No variant found for the requested size!");
-        if (size.uuid == undefined || size.uuid == "") throw new Error("No variant ID found for the requested size!");
+        //Check if getting amount was successful
+        if (amount == undefined) throw new Error("No lowest ask found for the variant passed!");
 
         //Place bid
-        const response = await fetchProductPricing(this.token, {
+        const response = await fetchProductVariantPricing(variant, {
             amount: amount,
-            variantID: size.uuid,
             currency: this.currency,
             cookieJar: this.cookieJar,
             proxy: this.proxy,
