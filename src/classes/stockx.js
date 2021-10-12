@@ -318,7 +318,7 @@ module.exports = class StockX {
      * @param {number} options.amount - The amount to place the bid for
      * @param {string} options.size - The requested size
      */
-    async placeBid(product, options = {}){
+    async fetchProductPricing(product, options = {}){
         //Convert amount to numeral type
         const amount = Number(options.amount);
         const requestedSize = options.size;
