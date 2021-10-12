@@ -9,6 +9,7 @@ const updateAsk = require('../api/updateask/index');
 const deleteAsk = require('../api/deleteask/index');
 const updateBid = require('../api/updatebid/index');
 const deleteBid = require('../api/deletebid/index');
+const fetchProductPricing = require('../api/scrapers/fetchproductpricing');
 const { formatProxy } = require('../utils');
 
 module.exports = class StockX {
@@ -312,18 +313,41 @@ module.exports = class StockX {
 
     /**
      *
-     * @param {string|Object} product - The product URL or object to fetch from
+     * @param {Object} product - The product object
+     * @param {Object} options
+     * @param {number} options.amount - The amount to place the bid for
+     * @param {string} options.size - The requested size
      */
-    async fetchProductPricing(product){
-        //Fetch pricing and return it
-        const pricing = await fetchProductDetails(product, {
-            country: this.country,
+    async placeBid(product, options = {}){
+        //Convert amount to numeral type
+        const amount = Number(options.amount);
+        const requestedSize = options.size;
+
+        //Verify fields passed in by user
+        if (!this.loggedIn) throw new Error("You must be logged in before placing a bid!");
+        else if (amount == NaN) throw new Error("Amount is incorrect, please ensure your parameters are correctly formatted.");
+        else if (requestedSize == undefined) throw new Error("Please specify a size to bid on!");
+        else if (product == undefined) throw new Error("A product must be specified!");
+        else if (typeof product == 'string') throw new Error("The product passed in must an object. Use fetchProductDetails() to get the details first.");
+        else if (product.variants == undefined) throw new Error("No variants found in product! Please check the product object passed in.");
+
+        //Get size from requestedSize in the product variants
+        const size = requestedSize.toLowerCase() == 'random' ? product.variants[Math.floor(Math.random() * product.variants.length)] : product.variants.find(variant => variant.size == requestedSize);
+
+        //Check if getting size was successful
+        if (size == undefined) throw new Error("No variant found for the requested size!");
+        if (size.uuid == undefined || size.uuid == "") throw new Error("No variant ID found for the requested size!");
+
+        //Place bid
+        const response = await fetchProductPricing(this.token, {
+            amount: amount,
+            variantID: size.uuid,
             currency: this.currency,
+            cookieJar: this.cookieJar,
             proxy: this.proxy,
-            userAgent: this.userAgent,
-            cookieJar: this.cookieJar
+            userAgent: this.userAgent
         });
 
-        return pricing;
+        return response;
     };
 };
