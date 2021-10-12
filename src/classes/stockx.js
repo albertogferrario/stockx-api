@@ -324,8 +324,7 @@ module.exports = class StockX {
         const requestedSize = options.size;
 
         //Verify fields passed in by user
-        if (!this.loggedIn) throw new Error("You must be logged in before placing a bid!");
-        else if (amount == NaN) throw new Error("Amount is incorrect, please ensure your parameters are correctly formatted.");
+        if (amount == NaN) throw new Error("Amount is incorrect, please ensure your parameters are correctly formatted.");
         else if (requestedSize == undefined) throw new Error("Please specify a size to bid on!");
         else if (product == undefined) throw new Error("A product must be specified!");
         else if (typeof product == 'string') throw new Error("The product passed in must an object. Use fetchProductDetails() to get the details first.");
