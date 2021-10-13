@@ -25,7 +25,6 @@ module.exports = async (variant, options) => {
             'accept': '*/*',
             'sec-fetch-site': 'same-origin',
             'accept-language': 'en-US,en;q=0.9',
-            'cookie': cookieJar,
         },
         json: {
             context: "buying",
