@@ -326,7 +326,7 @@ module.exports = class StockX {
         const amount = variant.market.lowestAsk;
 
         //Check if getting amount was successful
-        if (amount == undefined) throw new Error("No lowest ask found for the variant passed!");
+        if ((amount == undefined) || (amount == NaN)) throw new Error("Lowest ask is incorrect or not found for the variant passed!");
 
         //Place bid
         const response = await fetchProductVariantPricing(variant, {
