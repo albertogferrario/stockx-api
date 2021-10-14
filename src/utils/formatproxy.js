@@ -1,6 +1,5 @@
-module.exports = (proxy) => {
-    const splitProxy = proxy.split(':');
+module.exports = proxy => {
+    const [protocol, tail] = proxy.split('://', 2);
 
-    if (splitProxy.length == 2) return `http://${splitProxy[0]}:${splitProxy[1]}`;
-    else return `http://${splitProxy[2]}:${splitProxy[3]}@${splitProxy[0]}:${splitProxy[1]}`;
+    return `${protocol.startsWith('socks') ? 'socks' : 'http'}://${tail}`;
 }

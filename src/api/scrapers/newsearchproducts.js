@@ -1,5 +1,5 @@
 const util = require('util');
-const { checkRes, parseJSON, writeBody } = require('../../utils');
+const { checkRes, parseJSON } = require('../../utils');
 const request = util.promisify(require('postman-request'));
 
 const fetchAPIKey = require('./fetchapikey');

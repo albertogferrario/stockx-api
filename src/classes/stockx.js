@@ -23,16 +23,13 @@ module.exports = class StockX {
     constructor(options = {}){
         const { proxy, country, currency, userAgent } = options;
 
-        //Configure options
-        this.country = 'US';
-        this.currency = 'USD';
+        this.userAgent = userAgent || 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36';
+        this.country = country || 'US';
+        this.currency = currency || 'USD';
+        this.proxy = proxy ? formatProxy(proxy) : null;
+
         this.cookieJar = request.jar();
         this.loggedIn = false;
-        this.userAgent = userAgent !== undefined ? userAgent : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36';
-
-        this.country = country == undefined ? 'US' : country;
-        this.currency = currency == undefined ? 'USD' : currency;
-        this.proxy = proxy == undefined || proxy.trim() == '' ? undefined : formatProxy(proxy);
     };
 
     /**
@@ -80,16 +77,13 @@ module.exports = class StockX {
      * @param {string|Object} product - The product URL or object to fetch from
      */
     async fetchProductDetails(product){
-        //Fetch products and return them
-        const products = await fetchProductDetails(product, {
+        return await fetchProductDetails(product, {
             country: this.country,
             currency: this.currency,
             proxy: this.proxy,
             userAgent: this.userAgent,
             cookieJar: this.cookieJar
         });
-
-        return products;
     };
 
     /**
