@@ -21,13 +21,13 @@ module.exports = async (url, method = 'GET', headers = {}, data = null, proxy = 
     const agent = proxy ? makeAgent(proxy) : undefined;
 
     return await axios.request({
-        url,
-        method,
         headers,
+        method,
         data,
-        httpAgent: agent,
-        httpsAgent: agent,
-        cookieJar,
-        ...config,
+        agent,
+        agent,
+        url,
+        // cookieJar,
+        // ...config,
     })
 }
