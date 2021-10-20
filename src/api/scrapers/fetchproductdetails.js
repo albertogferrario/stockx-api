@@ -29,7 +29,7 @@ module.exports = async (product, options) => {
         "upgrade-insecure-requests": "1"
     };
 
-    const res = await request(url, 'GET', headers, proxy);
+    const res = await request(url, 'GET', headers, null, proxy);
 
     checkRes(res);
 

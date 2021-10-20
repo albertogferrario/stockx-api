@@ -20,14 +20,15 @@ const makeAgent = proxy => proxy.startsWith('socks') ? new SocksProxyAgent(proxy
 module.exports = async (url, method = 'GET', headers = {}, data = null, proxy = null, cookieJar = null, config = {}) => {
     const agent = proxy ? makeAgent(proxy) : undefined;
 
+    // fixme: use cookieJar
+
     return await axios.request({
-        headers,
-        method,
-        data,
-        agent,
-        agent,
         url,
-        // cookieJar,
-        // ...config,
+        method,
+        headers,
+        data,
+        httpAgent: agent,
+        httpsAgent: agent,
+        ...config,
     })
 }
