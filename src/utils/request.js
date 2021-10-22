@@ -15,9 +15,10 @@ const makeAgent = proxy => proxy.startsWith('socks') ? new SocksProxyAgent(proxy
  * @param {Object|null} data
  * @param {string|null} proxy
  * @param cookieJar
+ * @param timeout
  * @param config
  */
-module.exports = async (url, method = 'GET', headers = {}, data = null, proxy = null, cookieJar = null, config = {}) => {
+module.exports = async (url, method = 'GET', headers = {}, data = null, proxy = null, cookieJar = null, timeout = null, config = {}) => {
     const agent = proxy ? makeAgent(proxy) : undefined;
 
     // fixme: use cookieJar
@@ -29,6 +30,7 @@ module.exports = async (url, method = 'GET', headers = {}, data = null, proxy = 
         data,
         httpAgent: agent,
         httpsAgent: agent,
+        timeout,
         ...config,
     })
 }
