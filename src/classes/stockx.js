@@ -21,13 +21,12 @@ module.exports = class StockX {
      * @param options.currency - The currency to make requests in
      */
     constructor(options = {}){
-        const { proxy, country, currency, userAgent, timeout } = options;
+        const { proxy, country, currency, userAgent } = options;
 
         this.userAgent = userAgent || 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36';
         this.country = country || 'US';
         this.currency = currency || 'USD';
         this.proxy = proxy ? formatProxy(proxy) : null;
-        this.timeout = timeout
 
         this.cookieJar = request.jar();
         this.loggedIn = false;
@@ -83,8 +82,7 @@ module.exports = class StockX {
             currency: this.currency,
             proxy: this.proxy,
             userAgent: this.userAgent,
-            cookieJar: this.cookieJar,
-            timeout: this.timeout
+            cookieJar: this.cookieJar
         });
     };
 
@@ -330,8 +328,7 @@ module.exports = class StockX {
             currency: this.currency,
             cookieJar: this.cookieJar,
             proxy: this.proxy,
-            userAgent: this.userAgent,
-            timeout: this.timeout
+            userAgent: this.userAgent
         });
 
         return response;
