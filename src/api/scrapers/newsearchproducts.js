@@ -5,7 +5,7 @@ const request = util.promisify(require('postman-request'));
 const fetchAPIKey = require('./fetchapikey');
 
 module.exports = async (query, options = {}) => {
-    const { limit, proxy, userAgent, cookieJar } = options;
+    const { limit, proxy, timeout, userAgent} = options;
 
     const apiKey = await fetchAPIKey(options);
 
@@ -26,6 +26,7 @@ module.exports = async (query, options = {}) => {
         body: `{\"params\":\"query=${encodeURIComponent(query)}&facets=*&filters=\"}`,
         method: "POST",
         proxy,
+        timeout,
         //jar: cookieJar
     });
 

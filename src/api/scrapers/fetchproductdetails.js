@@ -1,7 +1,7 @@
 const {request, checkRes} = require('../../utils');
 
 module.exports = async (product, options) => {
-    const {country, currency, proxy, userAgent} = options;
+    const {country, currency, proxy, timeout, userAgent} = options;
     const variantArray = [];
     let webURL;
 
@@ -29,7 +29,7 @@ module.exports = async (product, options) => {
         "upgrade-insecure-requests": "1"
     };
 
-    const res = await request(url, 'GET', headers, null, proxy);
+    const res = await request(url, 'GET', headers, null, proxy, timeout);
 
     checkRes(res);
 

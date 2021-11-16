@@ -16,6 +16,7 @@ module.exports = class StockX {
     /**
      *
      * @param {Object=} options
+     * @param options.timeout - The timeout for requests
      * @param options.proxy - The proxy to make requests with
      * @param options.country - The country to make requests for
      * @param options.currency - The currency to make requests in
@@ -27,6 +28,7 @@ module.exports = class StockX {
         this.country = country || 'US';
         this.currency = currency || 'USD';
         this.proxy = proxy ? formatProxy(proxy) : null;
+        this.timeout = timeout ?? null;
 
         this.cookieJar = request.jar();
         this.loggedIn = false;
@@ -65,6 +67,7 @@ module.exports = class StockX {
         const products = await newSearchProducts(query, {
             limit, 
             proxy: this.proxy,
+            timeout: this.timeout,
             userAgent: this.userAgent,
             cookieJar: this.cookieJar
         });
@@ -81,6 +84,7 @@ module.exports = class StockX {
             country: this.country,
             currency: this.currency,
             proxy: this.proxy,
+            timeout: this.timeout,
             userAgent: this.userAgent,
             cookieJar: this.cookieJar
         });
@@ -328,6 +332,7 @@ module.exports = class StockX {
             currency: this.currency,
             cookieJar: this.cookieJar,
             proxy: this.proxy,
+            timeout: this.timeout,
             userAgent: this.userAgent
         });
 

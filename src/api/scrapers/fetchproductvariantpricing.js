@@ -1,7 +1,7 @@
 const {checkRes, request} = require('../../utils');
 
 module.exports = async (variant, options) => {
-    const {amount, currency, proxy, cookieJar, userAgent} = options;
+    const {amount, currency, proxy, timeout, cookieJar, userAgent} = options;
     let variantID;
 
     if (typeof variant == 'string') {
@@ -38,6 +38,7 @@ module.exports = async (variant, options) => {
             ],
         },
         proxy,
+        timeout,
         cookieJar,
     );
 
